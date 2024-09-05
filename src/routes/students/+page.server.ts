@@ -13,7 +13,7 @@ export async function load({ cookies }) {
 		});
 
         if (sessionToken != null) {
-            const res = await fetch('http://127.0.0.1:8000/course', {
+            const resCourse = await fetch('http://127.0.0.1:8000/course', {
                 method: 'POST',
                 body: JSON.stringify({
                     user_email: sessionToken
@@ -23,8 +23,20 @@ export async function load({ cookies }) {
                 }
             });
 
+            const resChat = await fetch('http://127.0.0.1:8000/course/chat', {
+                method: 'POST',
+                body: JSON.stringify({
+                    user_email: sessionToken,
+                    course_id: '1'
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
             return {
-                courses: await res.json(),
+                courses: await resCourse.json(),
+                chats: await resChat.json(),
                 token: sessionToken,
                 type: userType
             };

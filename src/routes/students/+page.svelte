@@ -4,6 +4,7 @@
 	import MasterLayout from '$lib/components/MasterLayout.svelte';
 	import MessageBubbleAI from '$lib/components/MessageBubble/MessageBubbleAI.svelte';
 	import MessageBubbleUser from '$lib/components/MessageBubble/MessageBubbleUser.svelte';
+	import { filter } from '@skeletonlabs/skeleton';
 
 	export let data;
 	console.log(data);
@@ -18,24 +19,7 @@
 	const courses = data.courses;
 
 	//Messages array
-	let messages:
-		| {
-				question: string;
-				answer: string;
-				timestamp: string;
-		  }[]
-		| [] = [
-		{
-			question: '¿Qué es eso?',
-			answer: 'Queso',
-			timestamp: ''
-		},
-		{
-			question: '¿Qué es eso?',
-			answer: 'Queso',
-			timestamp: ''
-		}
-	];
+	let messages = data.chats;
 
 	// Functions
 
@@ -57,7 +41,7 @@
 			<div class="bg-surface-500/10 p-4">
 				<h1 class="h1">Dhara</h1>
 			</div>
-			<CourseList bind:value={currentCourse} {courses}></CourseList>
+			<CourseList bind:currentCourse {courses}></CourseList>
 			<button
 				class="button_primary mb-8"
 				on:click={() => {
@@ -76,10 +60,10 @@
 				</div>
 				<div bind:this={chatElement} class="overflow-y-auto bg-surface-500/50 p-4">
 					<div class="grid gap-4">
-						{#each messages as m}
+						{#each messages.filter((m) => m.course_id == currentCourse) as m}
 							<MessageBubbleUser message={m.question} timestamp={m.timestamp}></MessageBubbleUser>
-							{#if m.answer != null}
-								<MessageBubbleAI message={m.answer} timestamp={m.timestamp}></MessageBubbleAI>
+							{#if m.response != null}
+								<MessageBubbleAI message={m.response} timestamp={m.timestamp}></MessageBubbleAI>
 							{/if}
 						{/each}
 					</div>
