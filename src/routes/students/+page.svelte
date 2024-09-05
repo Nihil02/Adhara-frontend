@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import CourseList from '$lib/components/CourseList.svelte';
 	import MasterLayout from '$lib/components/MasterLayout.svelte';
 	import MessageBubbleAI from '$lib/components/MessageBubble/MessageBubbleAI.svelte';
 	import MessageBubbleUser from '$lib/components/MessageBubble/MessageBubbleUser.svelte';
 
 	export let data;
-	console.log(data.courses);
+	console.log(data);
 
 	let chatElement: HTMLElement;
 
@@ -60,7 +61,9 @@
 			<button
 				class="button_primary mb-8"
 				on:click={() => {
-					console.log('Algo');
+					document.cookie = 'sessionToken=""; Path=/; HttpOnly; Max-Age=0;';
+					document.cookie = 'userType=""; Path=/; HttpOnly; Max-Age=0;';
+					goto('/');
 				}}>Cerrar Sesión</button
 			>
 		</div>

@@ -35,11 +35,13 @@
 
 			if (user != null) {
 				const user_type = user.user_type;
-				console.log(user_type);
+				const sessionToken = user.user_email
+
+				document.cookie = `sessionToken=${sessionToken}; path=/; secure; SameSite=Strict;`;
+				document.cookie = `userType=${user_type}; path=/; secure; SameSite=Strict;`;
 
 				switch (user_type) {
 					case 'student':
-						console.log('Here');
 						goto('/students');
 						break;
 					case 'teacher':
@@ -52,7 +54,7 @@
 						goto('/');
 				}
 			} else {
-				throw new Error();
+				throw new Error('Invalid login');
 			}
 		} catch (err) {
 			if (err instanceof Error) {

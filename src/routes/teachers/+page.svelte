@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import CourseList from '$lib/components/CourseList.svelte';
 	import MasterLayout from '$lib/components/MasterLayout.svelte';
 	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
 
 	export let data;
+
 	let currentCourse: string = '-1';
 
 	// Courses array
@@ -34,10 +36,14 @@
 				}}>Añadir Curso</button
 			>
 			<CourseList bind:value={currentCourse} {courses}></CourseList>
+
 			<button
 				class="button_primary mb-8"
 				on:click={() => {
-					console.log('Algo');
+					document.cookie =
+						'sessionToken=; Path=/; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+					document.cookie = 'userType=; Path=/; HttpOnly;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+					goto('/');
 				}}>Cerrar Sesión</button
 			>
 		</div>
