@@ -3,6 +3,7 @@
 	import CourseList from '$lib/components/CourseList.svelte';
 	import MasterLayout from '$lib/components/MasterLayout.svelte';
 	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
+	import logo from "$lib/img/logo.jpg"
 
 	export let data;
 
@@ -26,9 +27,7 @@
 <MasterLayout>
 	<div slot="sidebar">
 		<div class="grid h-screen grid-rows-[auto_auto_1fr_auto]">
-			<div class="bg-surface-500/10 p-4">
-				<h1 class="h1">Dhara</h1>
-			</div>
+			<img class="mx-auto my-4 h-auto max-w-32 rounded-lg" src={logo} alt="" />
 			<button
 				class="button_primary my-4"
 				on:click={() => {

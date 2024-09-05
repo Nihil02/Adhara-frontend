@@ -4,10 +4,12 @@
 	import MasterLayout from '$lib/components/MasterLayout.svelte';
 	import MessageBubbleAI from '$lib/components/MessageBubble/MessageBubbleAI.svelte';
 	import MessageBubbleUser from '$lib/components/MessageBubble/MessageBubbleUser.svelte';
-	import { filter } from '@skeletonlabs/skeleton';
+	import logo from '$lib/img/logo.jpg';
 
 	export let data;
 	console.log(data);
+
+	const webSocket = new WebSocket('ws://127.0.0.1:8000/doubt');
 
 	let chatElement: HTMLElement;
 
@@ -28,7 +30,19 @@
 	}
 
 	function sendPrompt(): void {
-		const newPrompt = {};
+		let aux;
+		const newPrompt = JSON.stringify({
+			question: currentPrompt,
+			student_id: data.userId,
+			course_id: currentCourse
+		});
+		webSocket.send(newPrompt);
+
+		webSocket.onmessage = (event) => {
+			console.log(event.data);
+		};
+
+		currentPrompt = '';
 		setTimeout(() => {
 			scrollChatBottom('smooth');
 		}, 0);
@@ -38,9 +52,7 @@
 <MasterLayout>
 	<div slot="sidebar">
 		<div class="grid h-screen grid-rows-[auto_1fr_auto]">
-			<div class="bg-surface-500/10 p-4">
-				<h1 class="h1">Dhara</h1>
-			</div>
+			<img class="mx-auto my-4 h-auto max-w-32 rounded-lg" src={logo} alt="" />
 			<CourseList bind:currentCourse {courses}></CourseList>
 			<button
 				class="button_primary mb-8"
@@ -84,7 +96,7 @@
 							class="variant-filled-primary"
 							on:click={() => {
 								sendPrompt();
-							}}>Send</button
+							}}>Enviar</button
 						>
 					</div>
 				</div>

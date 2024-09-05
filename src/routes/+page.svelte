@@ -35,10 +35,12 @@
 
 			if (user != null) {
 				const user_type = user.user_type;
-				const sessionToken = user.user_email
+				const user_id = user.user_id;
+				const sessionToken = user.user_email;
 
 				document.cookie = `sessionToken=${sessionToken}; path=/; secure; SameSite=Strict;`;
 				document.cookie = `userType=${user_type}; path=/; secure; SameSite=Strict;`;
+				document.cookie = `userId=${user_id}; path=/; secure; SameSite=Strict;`;
 
 				switch (user_type) {
 					case 'student':
