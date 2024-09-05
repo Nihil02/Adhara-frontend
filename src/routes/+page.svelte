@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import logo from '$lib/img/logo.jpg';
 
 	const credentials: Credentials = {
 		user_email: '',
@@ -71,7 +72,7 @@
 		<div class="grid h-screen place-items-center">
 			<div class="card min-h-72 min-w-96 rounded-lg bg-tertiary-50 p-4 shadow-md">
 				<form id="signIn" class="grid h-full place-items-center">
-					<h1 class="h1">Dhara</h1>
+					<img class="mx-auto my-2 h-auto max-w-32 rounded-lg" src={logo} alt="" />
 					<br />
 					<p>Email</p>
 					<input

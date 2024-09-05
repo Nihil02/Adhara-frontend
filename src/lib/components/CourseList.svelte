@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let courses: any = [];
-	export let currentCourse = '';
+	export let currentCourse = -1;
 </script>
 
 <div class="h-full overflow-y-auto pb-4">

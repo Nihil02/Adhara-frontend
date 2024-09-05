@@ -1,5 +1,5 @@
-import { goto } from "$app/navigation";
-import { onMount } from "svelte";
+import { goto } from '$app/navigation';
+import { onMount } from 'svelte';
 
 export async function load({ cookies }) {
 	try {
@@ -23,8 +23,31 @@ export async function load({ cookies }) {
 				}
 			});
 
+			const resEva = await fetch('http://127.0.0.1:8000/course/evaluation/new', {
+				method: 'POST',
+				body: JSON.stringify({
+					student_id: '1',
+					course_id: '1'
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+
+			const resGroupEva = await fetch('http://127.0.0.1:8000/course/group_evaluation/new', {
+				method: 'POST',
+				body: JSON.stringify({
+					course_id: '1'
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+
 			return {
 				courses: await res.json(),
+				eva: await resEva.json(),
+				evaG: await resGroupEva.json(),
 				token: sessionToken,
 				type: userType
 			};

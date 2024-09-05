@@ -15,7 +15,7 @@
 
 	let currentPrompt = '';
 
-	let currentCourse: string = '-1';
+	let currentCourse: number = -1;
 
 	// Courses array
 	const courses = data.courses;
@@ -31,21 +31,28 @@
 
 	function sendPrompt(): void {
 		let aux;
+		console.log(currentCourse);
+
 		const newPrompt = JSON.stringify({
 			question: currentPrompt,
-			student_id: data.userId,
+			student_id: parseInt(data.userId!),
 			course_id: currentCourse
 		});
 		webSocket.send(newPrompt);
 
 		webSocket.onmessage = (event) => {
-			console.log(event.data);
-		};
+			aux = JSON.parse(event.data);
+			console.log(aux);
 
-		currentPrompt = '';
-		setTimeout(() => {
-			scrollChatBottom('smooth');
-		}, 0);
+			messages = [...messages, aux];
+
+			console.log(messages);
+
+			currentPrompt = '';
+			setTimeout(() => {
+				scrollChatBottom('smooth');
+			}, 0);
+		};
 	}
 </script>
 
@@ -65,7 +72,7 @@
 		</div>
 	</div>
 	<div slot="main">
-		{#if currentCourse != '-1'}
+		{#if currentCourse != -1}
 			<div class="grid h-screen grid-rows-[auto_1fr_auto]">
 				<div class="bg-surface-500/30 p-4">
 					<h2 class="h2">{courses.filter((c) => c.id == currentCourse)[0].name}</h2>

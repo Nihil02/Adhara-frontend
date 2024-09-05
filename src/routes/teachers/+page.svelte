@@ -3,14 +3,16 @@
 	import CourseList from '$lib/components/CourseList.svelte';
 	import MasterLayout from '$lib/components/MasterLayout.svelte';
 	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
-	import logo from "$lib/img/logo.jpg"
+	import logo from '$lib/img/logo.jpg';
 
 	export let data;
 
-	let currentCourse: string = '-1';
+	let currentCourse: number = -1;
 
 	// Courses array
 	const courses = data.courses;
+
+	console.log(data);
 
 	const analysis = {
 		group_analysis: '',
@@ -18,23 +20,20 @@
 	};
 
 	// Students array
-	const students = [
-		{ name: 'Carlos Perez', questions: ['a', 'b'] },
-		{ name: 'Carlos Perez', questions: ['a', 'b'] }
-	];
+	const students = [{ name: 'Alice García López', questions: ['a', 'b'] }];
 </script>
 
 <MasterLayout>
 	<div slot="sidebar">
-		<div class="grid h-screen grid-rows-[auto_auto_1fr_auto]">
+		<div class="grid h-screen grid-rows-[auto_1fr_auto]">
 			<img class="mx-auto my-4 h-auto max-w-32 rounded-lg" src={logo} alt="" />
-			<button
+			<!--<button
 				class="button_primary my-4"
 				on:click={() => {
 					console.log('Algo');
 				}}>Añadir Curso</button
-			>
-			<CourseList bind:value={currentCourse} {courses}></CourseList>
+			>-->
+			<CourseList bind:currentCourse {courses}></CourseList>
 
 			<button
 				class="button_primary mb-8"
@@ -48,14 +47,14 @@
 		</div>
 	</div>
 	<div slot="main" class="grid h-screen grid-rows-[1fr]">
-		{#if currentCourse != '-1'}
+		{#if currentCourse != -1}
 			<div class="overflow-y-auto p-4">
 				<h1 class="h1">{courses.filter((c) => c.id == currentCourse)[0].name}</h1>
 				<br />
 
 				<h2 class="h2">Recomendación del curso</h2>
 				<br />
-				<p></p>
+				<p>{data.evaG.group_analysis}</p>
 
 				<br />
 				<br />
@@ -63,8 +62,8 @@
 				<h2 class="h2">Palabras clave</h2>
 				<br />
 
-				<div class="grid grid-cols-[auto_auto_auto_auto_auto_auto] gap-4 px-4">
-					{#each analysis.keywords as keyword}
+				<div class="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] gap-4 px-4">
+					{#each data.evaG.keywords as keyword}
 						<span class=" elipsis badge bg-primary-400">{keyword}</span>
 					{/each}
 				</div>
@@ -80,17 +79,17 @@
 							<svelte:fragment slot="children">
 								<div class="px-8">
 									<h4 class="h4">Recomendación del alumno</h4>
-									<p></p>
+									<p>{data.eva}</p>
 									<br />
 
-									<TreeViewItem
+									<!--<TreeViewItem
 										><h4 class="h4">Preguntas del alumno</h4>
 										<svelte:fragment slot="children">
 											{#each st.questions as qs}
 												<p>{qs}</p>
 											{/each}
 										</svelte:fragment>
-									</TreeViewItem>
+									</TreeViewItem>-->
 								</div>
 							</svelte:fragment>
 						</TreeViewItem>
