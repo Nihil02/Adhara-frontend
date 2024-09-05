@@ -75,8 +75,8 @@
 						<h3 class="h3">{st.name}</h3>
 						<svelte:fragment slot="children">
 							<div class="px-8">
-								<h4 class="h4">Recomendacion del alumno</h4>
-								<p>Recomiendo que sea menos homosensual</p>
+								<h4 class="h4">Recomendación del alumno</h4>
+								<p></p>
 								<br />
 
 								<TreeViewItem
