@@ -1,22 +1,19 @@
 <script lang="ts">
 	import CourseList from '$lib/components/CourseList.svelte';
 	import MasterLayout from '$lib/components/MasterLayout.svelte';
-	import {
-		TreeView,
-		TreeViewItem,
-		RecursiveTreeView,
-		type TreeViewNode
-	} from '@skeletonlabs/skeleton';
+	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
+
+	let currentCourse: string = '1';
 
 	// Courses array
-	const courses = [
-		{ name: 'Coso', href: '' },
-		{ name: 'Coso2', href: '' }
+	let courses = [
+		{ id: '1', name: 'Nombre de Curso Ultralargosnmcndsnv' },
+		{ id: '2', name: 'Coso2' }
 	];
 
 	const analysis = {
 		group_analysis: '',
-		keywords: ['Algo', 'Algo']
+		keywords: ['Keyword 1', 'Keyword 2']
 	};
 
 	// Students array
@@ -33,23 +30,23 @@
 				<p class="h1">Dhara</p>
 			</div>
 			<button
-				class="variant-outline-primary mx-12 my-4 rounded-lg py-2"
+				class="button_primary my-4"
 				on:click={() => {
 					console.log('Algo');
 				}}>Añadir Curso</button
 			>
-			<CourseList {courses} class="bg-surface-500/30"></CourseList>
+			<CourseList bind:value={currentCourse} {courses}></CourseList>
 			<button
-				class="variant-outline-primary mx-12 mb-8 rounded-lg py-2"
+				class="button_primary mb-8"
 				on:click={() => {
 					console.log('Algo');
 				}}>Cerrar Sesión</button
 			>
 		</div>
 	</div>
-	<div slot="main">
-		<div class="p-4">
-			<h1 class="h1">Nombre del curso</h1>
+	<div slot="main" class="grid h-screen grid-rows-[1fr]">
+		<div class="overflow-y-auto p-4">
+			<h1 class="h1">{courses.filter((c) => c.id == currentCourse)[0].name}</h1>
 			<br />
 
 			<h2 class="h2">Recomendación del curso</h2>
@@ -64,7 +61,7 @@
 
 			<div class="grid grid-cols-[auto_auto_auto_auto_auto_auto] gap-4 px-4">
 				{#each analysis.keywords as keyword}
-					<span class=" badge bg-primary-400">{keyword}</span>
+					<span class=" elipsis badge bg-primary-400">{keyword}</span>
 				{/each}
 			</div>
 			<br />

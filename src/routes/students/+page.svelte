@@ -4,22 +4,26 @@
 	import MessageBubbleAI from '$lib/components/MessageBubble/MessageBubbleAI.svelte';
 	import MessageBubbleUser from '$lib/components/MessageBubble/MessageBubbleUser.svelte';
 
-	import { AppBar } from '@skeletonlabs/skeleton';
-
 	let chatElement: HTMLElement;
 
 	let currentPrompt = '';
 
-	let currentCourse: number = 0;
+	let currentCourse: string = '-1';
 
 	// Courses array
 	let courses = [
-		{ name: 'Coso', href: '' },
-		{ name: 'Coso2', href: '' }
+		{ id: '1', name: 'Coso' },
+		{ id: '2', name: 'Coso2' }
 	];
 
 	//Messages array
-	let messages: [{ question: string; answer?: string; timestamp?: string }] | [] = [
+	let messages:
+		| {
+				question: string;
+				answer: string;
+				timestamp: string;
+		  }[]
+		| [] = [
 		{
 			question: '¿Qué es eso?',
 			answer: 'Queso',
@@ -35,7 +39,7 @@
 	// Functions
 
 	function scrollChatBottom(behavior?: ScrollBehavior): void {
-		elemChat.scrollTo({ top: elemChat.scrollHeight, behavior });
+		chatElement.scrollTo({ top: chatElement.scrollHeight, behavior });
 	}
 
 	function sendPrompt(): void {
@@ -52,8 +56,13 @@
 			<div class="bg-surface-500/10 p-4">
 				<p class="h1">Dhara</p>
 			</div>
-			<CourseList {courses} class="bg-surface-500/30"></CourseList>
-			<button class=" mx-12 mb-8 rounded-sm bg-primary-300 py-2">Log off</button>
+			<CourseList bind:value={currentCourse} {courses}></CourseList>
+			<button
+				class="button_primary mb-8"
+				on:click={() => {
+					console.log('Algo');
+				}}>Cerrar Sesión</button
+			>
 		</div>
 	</div>
 	<div slot="main">
@@ -71,10 +80,7 @@
 
 			<div class="bg-surface-500/30 p-4">
 				<!-- Message Input -->
-				<div
-					class="input-group input-group-divider grid-cols-[auto_1fr_auto] rounded-container-token"
-				>
-					<p></p>
+				<div class="input-group input-group-divider grid-cols-[1fr_auto] rounded-container-token">
 					<textarea
 						bind:value={currentPrompt}
 						class="border-0 bg-transparent ring-0"
@@ -83,7 +89,12 @@
 						placeholder="Escribe algo"
 						rows="1"
 					/>
-					<button class="variant-filled-primary">Send</button>
+					<button
+						class="variant-filled-primary"
+						on:click={() => {
+							sendPrompt();
+						}}>Send</button
+					>
 				</div>
 			</div>
 		</div>
