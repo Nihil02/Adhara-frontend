@@ -3,13 +3,11 @@
 	import MasterLayout from '$lib/components/MasterLayout.svelte';
 	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
 
-	let currentCourse: string = '1';
+	export let data;
+	let currentCourse: string = '-1';
 
 	// Courses array
-	let courses = [
-		{ id: '1', name: 'Nombre de Curso Ultralargosnmcndsnv' },
-		{ id: '2', name: 'Coso2' }
-	];
+	const courses = data.courses;
 
 	const analysis = {
 		group_analysis: '',
@@ -27,7 +25,7 @@
 	<div slot="sidebar">
 		<div class="grid h-screen grid-rows-[auto_auto_1fr_auto]">
 			<div class="bg-surface-500/10 p-4">
-				<p class="h1">Dhara</p>
+				<h1 class="h1">Dhara</h1>
 			</div>
 			<button
 				class="button_primary my-4"
@@ -45,53 +43,59 @@
 		</div>
 	</div>
 	<div slot="main" class="grid h-screen grid-rows-[1fr]">
-		<div class="overflow-y-auto p-4">
-			<h1 class="h1">{courses.filter((c) => c.id == currentCourse)[0].name}</h1>
-			<br />
+		{#if currentCourse != '-1'}
+			<div class="overflow-y-auto p-4">
+				<h1 class="h1">{courses.filter((c) => c.id == currentCourse)[0].name}</h1>
+				<br />
 
-			<h2 class="h2">Recomendación del curso</h2>
-			<br />
-			<p></p>
+				<h2 class="h2">Recomendación del curso</h2>
+				<br />
+				<p></p>
 
-			<br />
-			<br />
+				<br />
+				<br />
 
-			<h2 class="h2">Palabras clave</h2>
-			<br />
+				<h2 class="h2">Palabras clave</h2>
+				<br />
 
-			<div class="grid grid-cols-[auto_auto_auto_auto_auto_auto] gap-4 px-4">
-				{#each analysis.keywords as keyword}
-					<span class=" elipsis badge bg-primary-400">{keyword}</span>
-				{/each}
+				<div class="grid grid-cols-[auto_auto_auto_auto_auto_auto] gap-4 px-4">
+					{#each analysis.keywords as keyword}
+						<span class=" elipsis badge bg-primary-400">{keyword}</span>
+					{/each}
+				</div>
+				<br />
+				<br />
+
+				<h2 class="h2">Alumnos del curso</h2>
+				<br />
+				<TreeView>
+					{#each students as st}
+						<TreeViewItem>
+							<h3 class="h3">{st.name}</h3>
+							<svelte:fragment slot="children">
+								<div class="px-8">
+									<h4 class="h4">Recomendación del alumno</h4>
+									<p></p>
+									<br />
+
+									<TreeViewItem
+										><h4 class="h4">Preguntas del alumno</h4>
+										<svelte:fragment slot="children">
+											{#each st.questions as qs}
+												<p>{qs}</p>
+											{/each}
+										</svelte:fragment>
+									</TreeViewItem>
+								</div>
+							</svelte:fragment>
+						</TreeViewItem>
+					{/each}
+				</TreeView>
 			</div>
-			<br />
-			<br />
-
-			<h2 class="h2">Alumnos del curso</h2>
-			<br />
-			<TreeView>
-				{#each students as st}
-					<TreeViewItem>
-						<h3 class="h3">{st.name}</h3>
-						<svelte:fragment slot="children">
-							<div class="px-8">
-								<h4 class="h4">Recomendación del alumno</h4>
-								<p></p>
-								<br />
-
-								<TreeViewItem
-									><h4 class="h4">Preguntas del alumno</h4>
-									<svelte:fragment slot="children">
-										{#each st.questions as qs}
-											<p>{qs}</p>
-										{/each}
-									</svelte:fragment>
-								</TreeViewItem>
-							</div>
-						</svelte:fragment>
-					</TreeViewItem>
-				{/each}
-			</TreeView>
-		</div>
+		{:else}
+			<div class="grid h-screen place-items-center">
+				<p>Selecciona un curso</p>
+			</div>
+		{/if}
 	</div>
 </MasterLayout>

@@ -1,28 +1,96 @@
-<script>
+<script lang="ts">
+	import { goto } from '$app/navigation';
+
+	const credentials: Credentials = {
+		user_email: '',
+		password: ''
+	};
+
+	async function login() {
+		const form = <HTMLFormElement>document.getElementById('signIn');
+		console.log(credentials);
+
+		if (form.checkValidity()) {
+			try {
+				await loginLocal(credentials);
+			} catch (err) {
+				if (err instanceof Error) {
+					console.error('Login error', err.message);
+				}
+			}
+		} else {
+		}
+	}
+
+	async function loginLocal(credentials: Credentials) {
+		try {
+			const res = await fetch('http://127.0.0.1:8000/login', {
+				method: 'POST',
+				body: JSON.stringify(credentials),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			const user = await res.json();
+
+			if (user != null) {
+				const user_type = user.user_type;
+				console.log(user_type);
+
+				switch (user_type) {
+					case 'student':
+						console.log('Here');
+						goto('/students');
+						break;
+					case 'teacher':
+						goto('/teachers');
+						break;
+					case 'admin':
+						goto('/admin');
+						break;
+					default:
+						goto('/');
+				}
+			} else {
+				throw new Error();
+			}
+		} catch (err) {
+			if (err instanceof Error) {
+				console.error('Login error', err);
+			}
+		}
+	}
 </script>
 
 <main>
 	<div class="align-center align-middle">
 		<div class="grid h-screen place-items-center">
-			<div class="card rounded-lg min-h-72 min-w-96 p-4 shadow-md bg-tertiary-50">
-				<div class="grid h-full place-items-center">
-					<p>Usuario</p>
-					<input type="text" placeholder="Usuario" class="mt-4 rounded-container-token" />
+			<div class="card min-h-72 min-w-96 rounded-lg bg-tertiary-50 p-4 shadow-md">
+				<form id="signIn" class="grid h-full place-items-center">
+					<h1 class="h1">Dhara</h1>
+					<br />
+					<p>Email</p>
+					<input
+						bind:value={credentials.user_email}
+						type="email"
+						placeholder="correo@ejemplo.com"
+						class="mt-4 rounded-container-token"
+					/>
 
 					<br />
 
 					<p>Contraseña</p>
-					<input type="password" placeholder="Contraseña" class="mt-4 rounded-container-token" />
+					<input
+						bind:value={credentials.password}
+						type="password"
+						placeholder="Contraseña"
+						class="mt-4 rounded-container-token"
+					/>
 
 					<br />
 
-					<button
-						class="button_primary p-4"
-						on:click={() => {
-							console.log('Algo');
-						}}>Iniciar Sesión</button
-					>
-				</div>
+					<button on:click|preventDefault={login} class="button_primary p-4">Iniciar Sesión</button>
+				</form>
 			</div>
 		</div>
 	</div>
