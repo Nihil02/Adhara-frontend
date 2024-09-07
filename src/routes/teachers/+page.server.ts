@@ -44,12 +44,24 @@ export async function load({ cookies }) {
 				}
 			});
 
+			const resChat = await fetch('http://127.0.0.1:8000/course/chat', {
+				method: 'POST',
+				body: JSON.stringify({
+					user_email: 'alice@student.com',
+					course_id: '1'
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+
 			return {
 				courses: await res.json(),
 				eva: await resEva.json(),
 				evaG: await resGroupEva.json(),
 				token: sessionToken,
-				type: userType
+				type: userType,
+				chats: await resChat.json()
 			};
 		}
 	} catch (error) {

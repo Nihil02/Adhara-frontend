@@ -14,13 +14,8 @@
 
 	console.log(data);
 
-	const analysis = {
-		group_analysis: '',
-		keywords: ['Keyword 1', 'Keyword 2']
-	};
-
 	// Students array
-	const students = [{ name: 'Alice García López', questions: ['a', 'b'] }];
+	const students = [{ name: 'Alice García López', questions: data.chats }];
 </script>
 
 <MasterLayout>
@@ -52,7 +47,7 @@
 				<h1 class="h1">{courses.filter((c) => c.id == currentCourse)[0].name}</h1>
 				<br />
 
-				<h2 class="h2">Recomendación del curso</h2>
+				<h2 class="h2">Recomendación sobre el curso</h2>
 				<br />
 				<p>{data.evaG.group_analysis}</p>
 
@@ -78,18 +73,20 @@
 							<h3 class="h3">{st.name}</h3>
 							<svelte:fragment slot="children">
 								<div class="px-8">
-									<h4 class="h4">Recomendación del alumno</h4>
+									<h4 class="h4">Recomendación</h4>
 									<p>{data.eva}</p>
 									<br />
 
-									<!--<TreeViewItem
-										><h4 class="h4">Preguntas del alumno</h4>
+									<TreeViewItem
+										><h4 class="h4">Preguntas</h4>
 										<svelte:fragment slot="children">
 											{#each st.questions as qs}
-												<p>{qs}</p>
+												<p><strong>Pregunta: </strong>{qs.question}</p>
+												<p><strong>Respuesta: </strong>{qs.response}</p>
+												<br />
 											{/each}
 										</svelte:fragment>
-									</TreeViewItem>-->
+									</TreeViewItem>
 								</div>
 							</svelte:fragment>
 						</TreeViewItem>

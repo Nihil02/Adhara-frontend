@@ -2,6 +2,9 @@
 	import { goto } from '$app/navigation';
 	import logo from '$lib/img/logo.jpg';
 
+	import { Toast, getToastStore } from '@skeletonlabs/skeleton';
+	import type { ToastSettings, ToastStore } from '@skeletonlabs/skeleton';
+
 	const credentials: Credentials = {
 		user_email: '',
 		password: ''
@@ -10,6 +13,9 @@
 	async function login() {
 		const form = <HTMLFormElement>document.getElementById('signIn');
 		console.log(credentials);
+
+		const btn = <HTMLButtonElement>document.getElementById('btnlogin');
+		btn.setAttribute('disabled', 'disabled');
 
 		if (form.checkValidity()) {
 			try {
@@ -20,6 +26,7 @@
 				}
 			}
 		} else {
+			btn.removeAttribute('disabled');
 		}
 	}
 
@@ -61,6 +68,8 @@
 			}
 		} catch (err) {
 			if (err instanceof Error) {
+				const btn = <HTMLButtonElement>document.getElementById('btnlogin');
+				btn.removeAttribute('disabled');
 				console.error('Login error', err);
 			}
 		}
@@ -94,7 +103,9 @@
 
 					<br />
 
-					<button on:click|preventDefault={login} class="button_primary p-4">Iniciar Sesión</button>
+					<button on:click|preventDefault={login} id="btnlogin" class="button_primary p-4"
+						>Iniciar Sesión</button
+					>
 				</form>
 			</div>
 		</div>
